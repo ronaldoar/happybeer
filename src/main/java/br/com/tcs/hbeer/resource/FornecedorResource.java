@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tcs.hbeer.model.Produto;
-import br.com.tcs.hbeer.resource.dto.ProdutoDto;
-import br.com.tcs.hbeer.service.ProdutoService;
+import br.com.tcs.hbeer.model.Fornecedor;
+import br.com.tcs.hbeer.resource.dto.FornecedorDto;
+import br.com.tcs.hbeer.service.FornecedorService;
 
 @RestController
 @RequestMapping(value = "/v1") 
@@ -22,17 +22,17 @@ public class FornecedorResource {
 private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 	
 	@Autowired
-	private ProdutoService produtoService;
+	private FornecedorService fonecedorService;
 
 	
 	@PostMapping(value = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE')")
-	public ResponseEntity<?> cadastrar(@RequestBody ProdutoDto dto){
+	public ResponseEntity<?> cadastrar(@RequestBody FornecedorDto dto){
 		
 		try {
-			Produto prod = ProdutoDto.parse(dto);
-			produtoService.salvar(prod);
-			return new ResponseEntity<>(prod, HttpStatus.CREATED);	
+			Fornecedor f = FornecedorDto.parse(dto);
+			fonecedorService.salvar(f);
+			return new ResponseEntity<>(f, HttpStatus.CREATED);	
 			
 		}catch(Exception ex) {
 			logger.error("[CADASTRAR-PRODUTO]", ex.fillInStackTrace());
