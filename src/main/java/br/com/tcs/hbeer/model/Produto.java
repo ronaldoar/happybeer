@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import br.com.tcs.hbeer.model.commons.CategoriaProdutoEnum;
+import br.com.tcs.hbeer.model.commons.VolumeEnum;
 
 /**
  * Class <code>Produto</code></br>
@@ -48,6 +49,10 @@ public class Produto {
 	@Enumerated(EnumType.STRING)
 	@Column(name="CATEGORIA", nullable=false, unique=true)
 	private CategoriaProdutoEnum categoria;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="VOLUME", nullable=false, unique=true)
+	private VolumeEnum volume;
 			
 	@Column(name="DT_CADASTRO", nullable=false)
 	private LocalDateTime dtCadastro;
@@ -91,6 +96,14 @@ public class Produto {
 
 	public void setCategoria(CategoriaProdutoEnum categoria) {
 		this.categoria = categoria;
+	}
+
+	public VolumeEnum getVolume() {
+		return volume;
+	}
+
+	public void setVolume(VolumeEnum volume) {
+		this.volume = volume;
 	}
 
 	public Fornecedor getFornecedor() {
