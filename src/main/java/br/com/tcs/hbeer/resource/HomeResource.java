@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeResource {
 	
 	@GetMapping("/home")
-	@PreAuthorize("hasAnyAuthority('ROLE_ATENDENTE')")
+//	@PreAuthorize("hasAnyAuthority('ROLE_ATENDENTE')")
     public String home(@AuthenticationPrincipal Jwt jwt) {
         return String.format("Hello, %s", jwt.getClaim("preferred_username").toString());
     }

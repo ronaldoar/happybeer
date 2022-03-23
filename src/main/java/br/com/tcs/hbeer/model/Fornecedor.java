@@ -9,20 +9,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="TB_FORNECEDOR", uniqueConstraints={@UniqueConstraint(columnNames={"NOME_FORNECEDOR"})})
+@Table(name="TB_FORNECEDOR")
 public class Fornecedor {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="CD_FORNECEDOR", nullable=false)
 	private Long id;
 	
-	@Column(name="NOME_FORNECEDOR", length=150, nullable=false)
+	@Column(name="NOME_FORNECEDOR", length=150, nullable=false, unique = true)
 	private String nome;
 	
-	@Column(name="CNPJ", length=13, nullable=false)
+	@Column(name="CNPJ", length=13, nullable=false, unique = true)
 	private Long cnpj;
 	
 	@Column(name="DT_CADASTRO", nullable=false)

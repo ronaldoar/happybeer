@@ -19,6 +19,10 @@ public class FornecedorService {
 		return repository.pesquisarPorId(id, ativo);
 	}
 
+	public Fornecedor pesquisarPorCnpj(Long cnpj, String nome){
+		return repository.pesquisarPorCnpj(cnpj, nome);
+	}
+
 	
 	public List<Fornecedor> loadAll() {
 		return repository.findAll();

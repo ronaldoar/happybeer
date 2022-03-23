@@ -30,9 +30,18 @@ private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 	public ResponseEntity<?> cadastrar(@RequestBody FornecedorDto dto){
 		
 		try {
-			Fornecedor f = FornecedorDto.parse(dto);
-			fonecedorService.salvar(f);
-			return new ResponseEntity<>(f, HttpStatus.CREATED);	
+			
+			Fornecedor exit = fonecedorService.pesquisarPorCnpj(dto.getCnpj(), dto.getNome());
+			
+			if(exit == null) {
+				Fornecedor f = FornecedorDto.parse(dto);
+				fonecedorService.salvar(f);
+				return new ResponseEntity<>(f, HttpStatus.CREATED);	
+				
+			}else {
+				return new ResponseEntity<>("Fornecedor já cadastrado.", HttpStatus.CONFLICT);	
+			}
+			
 			
 		}catch(Exception ex) {
 			logger.error("[CADASTRAR-PRODUTO]", ex.fillInStackTrace());
