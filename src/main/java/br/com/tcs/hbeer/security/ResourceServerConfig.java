@@ -1,10 +1,17 @@
 package br.com.tcs.hbeer.security;
 
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -15,9 +22,34 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authz -> authz.antMatchers("/**").authenticated())
-                .oauth2ResourceServer()
-                .jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter);
+        http.authorizeRequests(authz -> authz.antMatchers("/**").authenticated())
+        .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
+        .csrf().disable()
+        .authorizeRequests()                                                                
+        .antMatchers("/**").permitAll()                  
+//        .antMatchers("/").hasRole("ADMIN")                                      
+//        .antMatchers("/*").hasRole("USER")
+        .and()
+        .exceptionHandling()
+        .accessDeniedPage("/access-denied")
+        .and()
+            .oauth2ResourceServer()
+            .jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter);
+        
+        http.cors().and();
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+    	CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "xsrfheadername","xsrfcookiename","X-Requested-With","XSRF-TOKEN","Accept", "x-xsrf-token","withcredentials","x-csrftoken"));
+        configuration.setExposedHeaders(Arrays.asList("custom-header1", "custom-header2"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); 
+        return source; 
     }
 }

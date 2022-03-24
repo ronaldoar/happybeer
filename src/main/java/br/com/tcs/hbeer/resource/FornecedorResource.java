@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import br.com.tcs.hbeer.resource.dto.FornecedorDto;
 import br.com.tcs.hbeer.service.FornecedorService;
 
 @RestController
-@RequestMapping(value = "/v1") 
+@RequestMapping(value = "/v1/fornecedores") 
 public class FornecedorResource {
 private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 	
@@ -44,8 +46,21 @@ private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 			
 			
 		}catch(Exception ex) {
-			logger.error("[CADASTRAR-PRODUTO]", ex.fillInStackTrace());
+			logger.error("[CADASTRAR-FORNECEDOR]", ex.fillInStackTrace());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> listar(){
+		
+		try {
+			return new ResponseEntity<>(fonecedorService.loadAll(), HttpStatus.OK);			
+			
+		}catch(Exception ex) {
+			logger.error("[LISTAR-FORNECEDORES]", ex.fillInStackTrace());
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }
