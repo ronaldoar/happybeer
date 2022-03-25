@@ -26,7 +26,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
         .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
         .csrf().disable()
         .authorizeRequests()                                                                
-        .antMatchers("/**").permitAll()                  
+//        .antMatchers("/**").permitAll()                  
 //        .antMatchers("/").hasRole("ADMIN")                                      
 //        .antMatchers("/*").hasRole("USER")
         .and()

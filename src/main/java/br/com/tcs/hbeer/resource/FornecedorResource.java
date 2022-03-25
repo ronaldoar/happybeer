@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +25,6 @@ private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 	@Autowired
 	private FornecedorService fonecedorService;
 
-	
 	@PostMapping(value = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE')")
 	public ResponseEntity<?> cadastrar(@RequestBody FornecedorDto dto){
@@ -52,6 +50,7 @@ private final Logger logger = LoggerFactory.getLogger(FornecedorResource.class);
 	}
 	
 	@GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAnyAuthority('ROLE_HBEER')")
 	public ResponseEntity<?> listar(){
 		
 		try {
