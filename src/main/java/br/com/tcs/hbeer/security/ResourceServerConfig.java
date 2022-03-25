@@ -26,12 +26,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
         .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
         .csrf().disable()
         .authorizeRequests()                                                                
-//        .antMatchers("/**").permitAll()                  
-//        .antMatchers("/").hasRole("ADMIN")                                      
-//        .antMatchers("/*").hasRole("USER")
+        .antMatchers("/**").permitAll()                  
+        .antMatchers("/*").hasRole("HBEER")
         .and()
         .exceptionHandling()
-        .accessDeniedPage("/access-denied")
         .and()
             .oauth2ResourceServer()
             .jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter);
@@ -41,13 +39,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
     	CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "xsrfheadername","xsrfcookiename","X-Requested-With","XSRF-TOKEN","Accept", "x-xsrf-token","withcredentials","x-csrftoken"));
-        configuration.setExposedHeaders(Arrays.asList("custom-header1", "custom-header2"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); 
         return source; 
